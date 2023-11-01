@@ -1,24 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import Faq from './components/Faq';
+import Footer from './components/Footer';
+import Gallery from './components/Gallery';
+import Hero from './components/Hero';
+import NavigationBar from './components/NavigationBar';
+import Service from './components/Service';
+import data from './data.json';
 
-function App() {
+function App() { 
+  const { galleries, services, faqs, footers } = data;
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <NavigationBar />
+      <Hero />
+      <Gallery data={galleries}/>
+      <Service data={services}/>
+      <Faq data={faqs}/>
+      <Footer data={footers} />
+    </>
   );
 }
 
