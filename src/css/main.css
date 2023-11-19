@@ -25,3 +25,7 @@
 .section-title {
     margin-top: 4rem;
 }
+
+.auth-container {
+    min-height: 110vh;
+}

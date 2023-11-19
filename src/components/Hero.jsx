@@ -3,7 +3,7 @@ import { Container, Col, Row, Button } from 'react-bootstrap'
 
 const Hero = () => {
   return (
-    <div className="hero min-vh-100 w-100">
+    <div id="home" className="hero min-vh-100 w-100">
       <Container>
         <Row>
           <Col className="text-white">

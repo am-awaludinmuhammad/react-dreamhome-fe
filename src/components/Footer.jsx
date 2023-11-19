@@ -1,12 +1,17 @@
 import React from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
+import data from '../data.json';
+import { useLocation } from 'react-router-dom';
 
-const Footer = ({ data = {} }) => {
-  const { socials } = data;
+const Footer = () => {
+  const { socials } = data.footers || {};
+  const location = useLocation();
+  const brandOnly = ['/register', '/login'].includes(location.pathname)
+    ? true
+    : false
 
   return (
-    <>
-      <section className="footer pb-3 pt-4 bg-dark">
+      <footer className={`${brandOnly ? 'fixed-bottom': ''} pb-3 pt-4 bg-dark mt-auto`}>
         <Container>
           <Row>
             <Col>
@@ -16,7 +21,7 @@ const Footer = ({ data = {} }) => {
               {
                 socials && 
                 socials.map(item => {
-                  const {id, name, url, iconClass} = item;
+                  const {id, iconClass} = item;
                   return (
                     <span key={id} className="mx-2"> <i className={iconClass}></i> </span>
                   )
@@ -30,8 +35,7 @@ const Footer = ({ data = {} }) => {
             </Col>
           </Row>
         </Container>
-      </section>
-    </>
+      </footer>
   )
 }
 
