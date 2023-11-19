@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
     Button,
     Form,
@@ -9,10 +9,10 @@ import {
 } from 'react-bootstrap';
 import Layout from '../pages/Layout';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useFormik } from 'formik';
+import userService from '../services/userService';
 
 const Register = () => {
-    const baseUrl = 'http://localhost:9000/api/v1/users';
     const navigate = useNavigate()
     const formData = {
         name: '',
@@ -22,29 +22,22 @@ const Register = () => {
         password_confirmation: ''
     }
 
-    const [responseBody, setResponseBody] = useState(formData);
-
     const inputChangeHandler = (event) => {
         const { name, value } = event.target;
-        setResponseBody({ ...responseBody, [name]: value })
+
+        formik.setFieldValue(name, value);
     }
 
-    const onSubmitHandler = (event) => {
-        event.preventDefault();
-        register(responseBody)
-    }
-
-    const register = async ({ name, username, email, password, password_confirmation }) => {
-
-        try {
-            const response = await axios.post(baseUrl, { name, username, email, password, password_confirmation });
-            if (response.data.data.id) {
-                navigate('/login')
+    const formik = useFormik({
+        initialValues: formData,
+        onSubmit: async () => {
+            const response = await userService.registerUser(formik.values);
+            
+            if (response.data) {
+                navigate('/login');
             }
-        } catch (error) {
-            console.log(error.stack)
         }
-    }
+    });
 
     return (
         <Layout>
@@ -56,26 +49,26 @@ const Register = () => {
                             <Card.Body>
                                 <Card.Title className="text-center">Register</Card.Title>
                                 <hr />
-                                <Form onSubmit={onSubmitHandler}>
+                                <Form onSubmit={formik.handleSubmit}>
                                     <Form.Group className="mb-3" controlId="fullName">
                                         <Form.Label>Full Name</Form.Label>
-                                        <Form.Control onChange={(e) => inputChangeHandler(e)} name="name" type="text" placeholder="Enter full name" />
+                                        <Form.Control onChange={inputChangeHandler} name="name" value={formik.values.name} type="text" placeholder="Enter full name" />
                                     </Form.Group>
                                     <Form.Group className="mb-3" controlId="username">
                                         <Form.Label>Username</Form.Label>
-                                        <Form.Control onChange={(e) => inputChangeHandler(e)} name="username" type="text" placeholder="Enter username" />
+                                        <Form.Control onChange={inputChangeHandler} name="username" value={formik.values.username} type="text" placeholder="Enter username" />
                                     </Form.Group>
                                     <Form.Group className="mb-3" controlId="email">
                                         <Form.Label>Email address</Form.Label>
-                                        <Form.Control onChange={(e) => inputChangeHandler(e)} name="email" type="email" placeholder="Enter email" />
+                                        <Form.Control onChange={inputChangeHandler} name="email" value={formik.values.email} type="email" placeholder="Enter email" />
                                     </Form.Group>
                                     <Form.Group className="mb-3" controlId="password">
                                         <Form.Label>Password</Form.Label>
-                                        <Form.Control onChange={(e) => inputChangeHandler(e)} name="password" type="password" placeholder="Password" />
+                                        <Form.Control onChange={inputChangeHandler} name="password" value={formik.values.password} type="password" placeholder="Password" />
                                     </Form.Group>
                                     <Form.Group className="mb-3" controlId="passwordConfirmation">
                                         <Form.Label>Password Confirmation</Form.Label>
-                                        <Form.Control onChange={(e) => inputChangeHandler(e)} name="password_confirmation" type="password" placeholder="Password" />
+                                        <Form.Control onChange={inputChangeHandler} name="password_confirmation" value={formik.values.password_confirmation} type="password" placeholder="Password" />
                                     </Form.Group>
 
                                     <Button variant="primary" type="submit" className="w-100 mt-2">
