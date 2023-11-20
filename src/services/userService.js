@@ -11,11 +11,7 @@ const registerUser = async ({ name, username, email, password, password_confirma
             errors: null
         }
     } catch (error) {
-        return {
-            data: null,
-            isLoading,
-            errors:  error.response.data || {}
-        }
+        throw error.response.data;
     }
 }
 
