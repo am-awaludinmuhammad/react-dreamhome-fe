@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
-import PagesData from "./PagesData";
+import routes from "../routes";
 
 const Router = () => {
-  const pageRoutes = PagesData.map(({ path, title, element }) => {
+  const pageRoutes = routes.map(({ path, title, element }) => {
     return <Route key={title} path={`/${path}`} element={element} />;
   });
 
