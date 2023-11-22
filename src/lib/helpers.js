@@ -1,11 +1,14 @@
 export const getInputErrorMessages = (errors) => {
-    let data = {}
-    
+    let field = {}
+
     if (errors.hasOwnProperty('validation_errors')) {
         errors.validation_errors.forEach(item => {
-            data[item.context.label] = item.message
-        })
+            field[item.context.label] = item.message
+        });
     }
 
-    return data;
+    return { 
+        message: errors.message,
+        field
+    };
 }
