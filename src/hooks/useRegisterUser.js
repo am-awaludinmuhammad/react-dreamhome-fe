@@ -15,7 +15,7 @@ export const useRegisterUser = () => {
         try {
             const { data:response } = await axiosInstance.post('/users', { name, username, email, password, password_confirmation });
 
-            localStorage.setItem('user', response.data);
+            localStorage.setItem('user', JSON.stringify(response.data));
 
             dispatch({ type: 'LOGIN', payload: response.data });
             setIsLoading(false);

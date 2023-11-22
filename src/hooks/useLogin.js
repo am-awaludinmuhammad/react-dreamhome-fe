@@ -14,7 +14,7 @@ export const useLogin = () => {
 
         try {
             const { data:response } = await axiosInstance.post('/auth/login', { username, password });
-            localStorage.setItem('user', response.data);
+            localStorage.setItem('user', JSON.stringify(response.data));
 
             dispatch({ type: 'LOGIN', payload: response.data });
             setIsLoading(false);
