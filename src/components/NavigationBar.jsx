@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { Navbar, Container, Nav } from 'react-bootstrap'
+import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap'
 import { Link, useLocation } from 'react-router-dom'
+import { useLogout } from '../hooks/useLogout'
+import { useAuthContext } from '../hooks/useAuthContext'
 
 const NavigationBar = () => {
   const [changeColor, setChangeColor] = useState(false)
-  const auth = false;
+  const { logout } = useLogout();
+  const { user } = useAuthContext();
 
   const changeBackgroundColor = () => {
     if (window.scrollY > 120) {
@@ -12,6 +15,10 @@ const NavigationBar = () => {
     } else {
       setChangeColor(false)
     }
+  }
+
+  const handleLogoutClick = async () => {
+    await logout();
   }
 
   useEffect(() => {
@@ -44,9 +51,15 @@ const NavigationBar = () => {
                   <Nav.Link href="#faq" className="me-2">FAQ</Nav.Link>
                 </Nav>
                 {
-                  auth ?
+                  user ?
                     <Nav className="ms-auto">
-                      <Nav.Link as={Link} to="/profile" className="me-2">Profile</Nav.Link>
+                      <NavDropdown title={user.name} id="basic-nav-dropdown">
+                        <NavDropdown.Item as={Link} to="/profile">Profile</NavDropdown.Item>
+                        <NavDropdown.Divider />
+                        <NavDropdown.Item onClick={handleLogoutClick}>
+                          <span className="text-danger">Logout</span>
+                        </NavDropdown.Item>
+                      </NavDropdown>
                     </Nav> :
                     <Nav className="ms-auto">
                       <Nav.Link as={Link} to="/login" className="me-2">Login</Nav.Link>
